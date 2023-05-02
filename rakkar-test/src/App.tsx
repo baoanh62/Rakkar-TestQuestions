@@ -1,7 +1,13 @@
 import React from 'react';
+import AppLayout from './components/AppLayout';
 
 const App = () => {
-  return <h1>Hello, a!</h1>;
+  return  (
+    <AppLayout>
+        <h1>Welcome to my app!</h1>
+        <p>This is the main content area.</p>
+    </AppLayout>
+  );
 };
 
 export default App;
