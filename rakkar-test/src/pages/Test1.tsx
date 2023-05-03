@@ -3,7 +3,7 @@ import { Page } from "../types/page";
 import React from "react";
 import MainLayout from '../components/common/MainLayout'
 
-const Test1: Page = () => {
+const test1: Page = () => {
     return (
       <div className="container">
         <div className="grid place-content-center min-h-screen">
@@ -18,6 +18,6 @@ const Test1: Page = () => {
     );
   };
 
-export default Test1;
+export default test1;
 
-Test1.layout = MainLayout
+test1.layout = MainLayout
