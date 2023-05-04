@@ -3,29 +3,56 @@ import { useEffect, useState } from "react";
 
 const baseUrl = "https://api.coingecko.com/api/v3/coins/";
 
-
 export interface PriceChangeModel {
-    prices:any[]
+    prices: any[]
 }
 
-async function getPriceChangeRangeApi(coinId: string, currency: string, from: number, to: number) {
+const convertUnixTimestamp = (date: Date) => {
+    const timeInMillisecond = date.getTime();
+  
+    const unixTimestamp = Math.floor(timeInMillisecond / 1000);
+    return unixTimestamp;
+  };
+  
+
+export async function getPriceChangeRangeApi(coinId: string, currency: string, from: number, to: number) {
     let url = baseUrl + coinId + "/market_chart/range?vs_currency=" + currency + "&from=" + from + "&to=" + to;
-   console.log("url " + url);
+    console.log("url " + url);
     const response = await axios.get(url);
     return response.data;
 };
 
-export const getPriceChangeRange = (coinId: string, currency: string, from: number, to: number): PriceChangeModel | null => {
+export async function getPriceChangeRange(coinId: string, currency: string, time: string) {
+    let unixTimeFrom = 0;
+    let unixTimeTo = 0;
 
-    const [data, setData] = useState<PriceChangeModel|null>(null);
+    switch (time) {
+        case "24h": {
+          let today = new Date()
+          let from = new Date(today)
+          from.setDate(from.getDate() - 1);
+  
+          unixTimeFrom = convertUnixTimestamp(from);
+          unixTimeTo = convertUnixTimestamp(today);
+        }
+        case "7d": {
+          let today = new Date()
+          let from = new Date(today)
+          from.setDate(from.getDate() - 7);
+  
+          unixTimeFrom = convertUnixTimestamp(from);
+          unixTimeTo = convertUnixTimestamp(today);
+        }
+        case "14d": {
+          let today = new Date()
+          let from = new Date(today)
+          from.setDate(from.getDate() - 14);
+  
+          unixTimeFrom = convertUnixTimestamp(from);
+          unixTimeTo = convertUnixTimestamp(today);
+        }
+      }
 
-    useEffect(() => {
-        const fetchData = async () => {
-            let response = await getPriceChangeRangeApi(coinId, currency, from, to);
-            setData(response);
-        };
-        fetchData();
-    }, []);
-
-    return data;
+    let response = await getPriceChangeRangeApi(coinId, currency, unixTimeFrom, unixTimeTo);
+    return response;
 };

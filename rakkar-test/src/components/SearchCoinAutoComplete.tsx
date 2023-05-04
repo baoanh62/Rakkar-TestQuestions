@@ -5,15 +5,21 @@ import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin'
 import { useState } from 'react';
 
 interface SearchProps {
+    trendingModels: TredingCoinModel[],
     emitSearchData: (data: TredingCoinModel | null) => void;
 }
 
 const SearchCoinAutoComplete = (props: SearchProps) => {
+    if(!props)
+        return (
+            <div></div>
+        );
+
     const sendDataToParent = (data: TredingCoinModel): void => {
         props.emitSearchData(data);
     }
-
-    let rows = findTrendingCoin();
+    
+    let rows = props.trendingModels;
     return (
         <Autocomplete
             options={rows}

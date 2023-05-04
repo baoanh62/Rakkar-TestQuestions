@@ -30,14 +30,10 @@ async function fetchTrendingCoins() {
 };
 
 export const findTrendingCoin = (): TredingCoinModel[] => {
-
     const [data, setTredingCoinModel] = useState<TredingCoinModel[]>([]);
-
     useEffect(() => {
         const fetchCoins = async () => {
-            let allPromises = await fetchTrendingCoins();
-            const coins = await Promise.all(allPromises);
-            
+            let coins = await fetchTrendingCoins();
             let coinModels = coins.map((coin: any) => ({
                 coin_id: coin.item.coin_id,
                 id: coin.item.id,

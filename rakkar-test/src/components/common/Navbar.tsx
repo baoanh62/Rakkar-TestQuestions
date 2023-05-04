@@ -103,7 +103,7 @@ const Navbar = () => {
                                 }}
                             >
                                 {navigationLinks.map((link) => (
-                                    <MenuItem key={link.href} onClick={handleCloseNavMenu}>
+                                    <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{link.name}</Typography>
                                     </MenuItem>
                                 ))}
@@ -132,7 +132,6 @@ const Navbar = () => {
                             {navigationLinks.map((link) => (
                                 <Link href={link.href}>
                                     <Button
-                                        key={link.href}
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
                                     >
@@ -165,7 +164,7 @@ const Navbar = () => {
                                 onClose={handleCloseUserMenu}
                             >
                                 {navigationLinks.map((link) => (
-                                    <MenuItem key={link.href} onClick={handleCloseUserMenu}>
+                                    <MenuItem onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center">{link.name}</Typography>
                                     </MenuItem>
                                 ))}

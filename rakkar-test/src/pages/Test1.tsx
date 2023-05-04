@@ -1,13 +1,14 @@
 import Link from "next/link";
 import { Page } from "../types/page";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MainLayout from '../components/common/MainLayout'
 import { Container } from "@mui/material";
 import DataListTrendingCoin from "../components/DataListTrendingCoin"
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SearchCoinAutoComplete from '../components/SearchCoinAutoComplete';
 import CoindDetailUI from '../components/DetailCoinUI';
-import { TredingCoinModel } from "@/services/getTrendingCoin";
+import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin';
+import { getPriceChangeRange } from '@/services/getPriceChangeRange';
 
 const darkTheme = createTheme({
   palette: {
@@ -27,8 +28,24 @@ const styles = {
 const test1: Page = () => {
   const [searchModel, setData] = useState<TredingCoinModel | null>(null);
 
-  function receiveSearchModel(prop: TredingCoinModel | null): void {
-    setData(prop);
+  let trendingCoin = findTrendingCoin();
+
+  async function receiveSearchModel(prop: TredingCoinModel | null): void {
+
+    try {
+      let response = await getPriceChangeRange(prop.id, "usd", "24h");
+      console.log(response);
+      setData(prop);
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function receiveRangeChange(time: string) {
+    let result = await getPriceChangeRange(searchModel?.id, "usd", time);
+    console.log(result);
+
   }
 
   return (
@@ -37,9 +54,9 @@ const test1: Page = () => {
         <h1 className="text-4xl my-8">
           Find Trending Coin
         </h1>
-        <SearchCoinAutoComplete emitSearchData={receiveSearchModel} />
+        <SearchCoinAutoComplete trendingModels={trendingCoin} emitSearchData={receiveSearchModel} />
         <div style={styles.main}>
-          <CoindDetailUI prop={searchModel}/>
+          <CoindDetailUI trendingModel={searchModel} emitRangePriceChange={receiveRangeChange} />
         </div>
       </Container>
     </ThemeProvider>

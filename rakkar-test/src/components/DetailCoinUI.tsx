@@ -6,55 +6,30 @@ import { getPriceChangeRange } from '@/services/getPriceChangeRange';
 import { TredingCoinModel } from '@/services/getTrendingCoin';
 import { Box, Button, ButtonGroup, Divider, Grid, Stack, Typography } from '@mui/material';
 
-const getTimeData = (coinId: string, from: number, to: number) => {
-    if (coinId == null || coinId == undefined)
-        return;
-    console.log("adad");
-    let result = getPriceChangeRange(coinId, "usd", from, to);
-    console.log(result);
+interface DetailProps {
+    trendingModel: TredingCoinModel,
+    emitRangePriceChange: (time: string) => void;
 }
 
-const handleTimeChange = (cointId: string, time: string) => {
-    switch (time) {
-        case "24h": {
-            let today = new Date()
-            let from = new Date(today)
-            from.setDate(from.getDate() - 1)
+const getTimeData = (from: number, to: number) => {
+    // let result = getPriceChangeRange(coinId, "usd", from, to);
+    // console.log(result);
+}
 
-            getTimeData(cointId, from.valueOf(), today.valueOf());
-        }
-        case "7d": {
-            let today = new Date()
-            let from = new Date(today)
-            from.setDate(from.getDate() - 7)
+const CoindDetailUI = (props: DetailProps) => {
 
-            getTimeData(cointId, from.valueOf(), today.valueOf());
-        }
-        case "14d": {
-            let today = new Date()
-            let from = new Date(today)
-            from.setDate(from.getDate() - 14)
-
-            getTimeData(cointId, from.valueOf(), today.valueOf());
-        }
+    const sendDataToParent = (time: string): void => {
+        props.emitRangePriceChange(time);
     }
-    console.log(time);
-}
 
-
-const CoindDetailUI = ( prop : TredingCoinModel) => {
-    console.log (prop);
-    let data = prop?.prop;
-   // let coinDetail = getCoinDetail(data?.id);
-    if (data?.id)
-        handleTimeChange(data.id, "24h");
+    let data = props?.trendingModel;
 
     if (!data) {
         return (
             <h2>Data Not Found</h2>
         );
     }
-
+    
     return (
         <Stack>
             <Grid container style={{ height: "100%" }}>
@@ -69,13 +44,13 @@ const CoindDetailUI = ( prop : TredingCoinModel) => {
                     {/* <Typography variant='h4'>{prop.price_btc}</Typography> */}
                 </Box>
             </Grid>
-            <div style={{ marginRight: 20, 'text-align': 'right' }}>
+            <div style={{ marginRight: 20, textAlign: 'right' }}>
                 <ButtonGroup variant="contained" aria-label="outlined default button group">
                     <Button onClick={(event) => {
-                        handleTimeChange(data.id, "24h");
+                        sendDataToParent("24h");
                     }}>24h</Button>
-                    <Button onClick={(event) => { handleTimeChange(data.id, '7d') }}>7d</Button>
-                    <Button onClick={(event) => { handleTimeChange(data.id, '14d') }}>14d</Button>
+                    <Button onClick={(event) => { sendDataToParent('7d') }}>7d</Button>
+                    <Button onClick={(event) => { sendDataToParent('14d') }}>14d</Button>
                 </ButtonGroup>
             </div>
         </Stack>
