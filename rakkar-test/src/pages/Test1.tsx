@@ -9,6 +9,7 @@ import SearchCoinAutoComplete from '../components/SearchCoinAutoComplete';
 import CoindDetailUI from '../components/DetailCoinUI';
 import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin';
 import { getPriceChangeRange } from '@/services/getPriceChangeRange';
+import { getCoinDetail } from "@/services/getCoinDetail";
 
 const darkTheme = createTheme({
   palette: {
@@ -31,21 +32,18 @@ const test1: Page = () => {
   let trendingCoin = findTrendingCoin();
 
   async function receiveSearchModel(prop: TredingCoinModel | null): void {
+    let response = await getPriceChangeRange(prop.id, "usd", "24h");
+    console.log(response);
 
-    try {
-      let response = await getPriceChangeRange(prop.id, "usd", "24h");
-      console.log(response);
-      setData(prop);
+    let coinDetail = await getCoinDetail({ coinId: prop.id });
+    console.log(coinDetail);
 
-    } catch (error) {
-      console.log(error);
-    }
+    setData(prop);
   }
 
   async function receiveRangeChange(time: string) {
     let result = await getPriceChangeRange(searchModel?.id, "usd", time);
     console.log(result);
-
   }
 
   return (

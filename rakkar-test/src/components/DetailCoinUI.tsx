@@ -11,11 +11,6 @@ interface DetailProps {
     emitRangePriceChange: (time: string) => void;
 }
 
-const getTimeData = (from: number, to: number) => {
-    // let result = getPriceChangeRange(coinId, "usd", from, to);
-    // console.log(result);
-}
-
 const CoindDetailUI = (props: DetailProps) => {
 
     const sendDataToParent = (time: string): void => {
@@ -29,7 +24,7 @@ const CoindDetailUI = (props: DetailProps) => {
             <h2>Data Not Found</h2>
         );
     }
-    
+
     return (
         <Stack>
             <Grid container style={{ height: "100%" }}>

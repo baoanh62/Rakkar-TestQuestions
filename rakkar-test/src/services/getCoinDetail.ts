@@ -4,20 +4,8 @@ import { useEffect, useState } from "react";
 const baseUrl = "https://api.coingecko.com/api/v3/coins/";
 
 export interface CoinDetailModel {
-    id: string;
-    name: string;
-    symbol: string;
-    image: {
-        small: string;
-        large: string;
-        thumb: string;
-    };
-    market_data: {
-        current_price: {
-            usd: number;
-            eur: number;
-        };
-    };
+    current_price: number;
+
 }
 
 async function getCoinDetailApi(coinId: string) {
@@ -25,18 +13,11 @@ async function getCoinDetailApi(coinId: string) {
     return response.data;
 };
 
-export const getCoinDetail = (coinId: string): CoinDetailModel | null => {
-    const [data, setCoinDetailModel] = useState<CoinDetailModel | null>(null);
-
-    useEffect(() => {
-        if (coinId) {
-            const fetchData = async () => {
-                let data = await getCoinDetailApi(coinId)
-                setCoinDetailModel(data);
-            };
-            fetchData();
-        }
-    }, []);
-
-    return data;
+export async function getCoinDetail(coinId: string): CoinDetailModel{
+    console.log(coinId);
+    let data = await getCoinDetailApi(coinId);
+    return {
+        current_price: data.market_data.current_price.usd,
+        
+    };
 };
