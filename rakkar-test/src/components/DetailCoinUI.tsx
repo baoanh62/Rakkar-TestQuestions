@@ -8,6 +8,7 @@ import { Box, Button, ButtonGroup, Divider, Grid, Stack, Typography } from '@mui
 
 interface DetailProps {
     trendingModel: TredingCoinModel,
+    coinDetail: CoinDetailModel,
     emitRangePriceChange: (time: string) => void;
 }
 
@@ -18,6 +19,7 @@ const CoindDetailUI = (props: DetailProps) => {
     }
 
     let data = props?.trendingModel;
+    let coinDetail = props?.coinDetail;
 
     if (!data) {
         return (
@@ -36,7 +38,10 @@ const CoindDetailUI = (props: DetailProps) => {
                     <h2>
                         <b>{data.name}</b> {data.symbol}
                     </h2>
-                    {/* <Typography variant='h4'>{prop.price_btc}</Typography> */}
+                    <Typography variant='h4'>{coinDetail?.current_price.toLocaleString('en-US', {
+                        style: 'currency',
+                        currency: 'USD',
+                        })}</Typography>
                 </Box>
             </Grid>
             <div style={{ marginRight: 20, textAlign: 'right' }}>
