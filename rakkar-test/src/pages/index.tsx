@@ -3,7 +3,7 @@ import type { Page } from '../types/page'
 import MainLayout from '../components/common/MainLayout'
 
 import Link from "next/link";
-import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Heading, Typography } from "@mui/material";
+import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography } from "@mui/material";
 
 const HomePage: Page = () => {
   return (
@@ -29,7 +29,7 @@ const HomePage: Page = () => {
                 Complete - 80%
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                - Done Get Trending Coin and Autocomplete 
+                - Done Get Trending Coin and Autocomplete
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 - Done Get Detail Info Coin

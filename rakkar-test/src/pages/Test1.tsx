@@ -9,7 +9,7 @@ import SearchCoinAutoComplete from '../components/SearchCoinAutoComplete';
 import CoindDetailUI from '../components/DetailCoinUI';
 import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin';
 import { getPriceChangeRange, PriceChangeModel } from '@/services/getPriceChangeRange';
-import { getCoinDetail,CoinDetailModel } from "@/services/getCoinDetail";
+import { getCoinDetail, CoinDetailModel } from "@/services/getCoinDetail";
 import { LineChartCoin } from "@/components/LineChartCoin";
 
 const darkTheme = createTheme({
@@ -31,7 +31,6 @@ const test1: Page = () => {
   const [searchModel, setData] = useState<TredingCoinModel | null>(null);
   const [coinDetail, setCoinDetail] = useState<CoinDetailModel | null>(null);
   const [priceChangeModel, setPriceChangeModel] = useState<PriceChangeModel | null>(null);
-  
   let trendingCoin = findTrendingCoin();
 
   async function receiveSearchModel(prop: TredingCoinModel | null): void {
@@ -48,7 +47,7 @@ const test1: Page = () => {
 
   async function receiveRangeChange(time: string) {
     let result = await getPriceChangeRange(searchModel?.id, "usd", time);
-    
+
     console.log(result);
     setPriceChangeModel(result);
   }
@@ -61,12 +60,12 @@ const test1: Page = () => {
         </h1>
         <SearchCoinAutoComplete trendingModels={trendingCoin} emitSearchData={receiveSearchModel} />
         <div style={styles.main}>
-          <CoindDetailUI trendingModel={searchModel} 
-                        coinDetail={coinDetail}
-                         emitRangePriceChange={receiveRangeChange} />
+          <CoindDetailUI trendingModel={searchModel}
+            coinDetail={coinDetail}
+            emitRangePriceChange={receiveRangeChange} />
         </div>
-        <LineChartCoin style={styles.main} 
-                       priceChangeModel={priceChangeModel}/>
+        <LineChartCoin style={styles.main}
+          priceChangeModel={priceChangeModel} />
       </Container>
     </ThemeProvider>
   );
