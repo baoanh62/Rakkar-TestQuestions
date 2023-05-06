@@ -24,13 +24,13 @@ const HomePage: Page = () => {
                 Test 1 - Trending Coin
               </Typography>
               <Typography variant="h5" color="text.secondary">
-                Complete - 80%
+                Complete - 85%
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 - Done Get Trending Coin and Autocomplete
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                - Done Get Detail Info Coin
+                - Done Get Detail Info Coin and OHLC
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 - Get Data Price for Chart but not yet complete populate data on Line Chart
