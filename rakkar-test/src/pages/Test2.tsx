@@ -1,12 +1,13 @@
 import { Page } from "../types/page";
 import React from "react";
 import MainLayout from '../components/common/MainLayout'
-import { Container, Box } from "@material-ui/core";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
+import { Container } from "@mui/material";
+import Image from 'next/image';
 
 const itemData = [
     {
@@ -14,18 +15,24 @@ const itemData = [
         title: "Test Method",
         author: "Jest Test",
         featured: false,
+        width: '495px',
+        height: '200px',
     },
     {
         img: '/testcase.png',
         title: "Test Case",
         author: "Jest Test",
         featured: false,
+        width: 495,
+        height: 200,
     },
     {
         img: '/test2result.png',
         title: "Test Result",
         author: "Jest Test",
         featured: false,
+        width: 495,
+        height: 200,
     }
 ];
 
@@ -58,9 +65,11 @@ const test2: Page = () => {
                     return (
                         <ImageListItem key={item.img} cols={cols} rows={rows}>
                             <img
-                                {...srcset(item.img, 250, 200, rows, cols)}
-                                alt={item.title}
                                 loading="lazy"
+                                src={item.img}
+                                alt={item.title}
+                                width={item.width}
+                                height={item.height}
                             />
                             <ImageListItemBar
                                 sx={{

@@ -103,7 +103,7 @@ const Navbar = () => {
                                 }}
                             >
                                 {navigationLinks.map((link) => (
-                                    <MenuItem onClick={handleCloseNavMenu}>
+                                    <MenuItem key={link.name} onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{link.name}</Typography>
                                     </MenuItem>
                                 ))}
@@ -130,7 +130,7 @@ const Navbar = () => {
                         </Typography>
                         <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                             {navigationLinks.map((link) => (
-                                <Link href={link.href}>
+                                <Link key={link.name} href={link.href}>
                                     <Button
                                         onClick={handleCloseNavMenu}
                                         sx={{ my: 2, color: 'white', display: 'block' }}
@@ -164,7 +164,7 @@ const Navbar = () => {
                                 onClose={handleCloseUserMenu}
                             >
                                 {navigationLinks.map((link) => (
-                                    <MenuItem onClick={handleCloseUserMenu}>
+                                    <MenuItem  key={link.name} onClick={handleCloseUserMenu}>
                                         <Typography textAlign="center">{link.name}</Typography>
                                     </MenuItem>
                                 ))}

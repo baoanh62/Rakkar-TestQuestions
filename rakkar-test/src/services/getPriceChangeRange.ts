@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-
-const baseUrl = "https://api.coingecko.com/api/v3/coins/";
+import { getPriceChangeRangeApi } from './coingeckoApi';
 
 export interface PriceChangeModel {
     prices: any[]
@@ -14,15 +13,7 @@ const convertUnixTimestamp = (date: Date) => {
     return unixTimestamp;
   };
   
-
-export async function getPriceChangeRangeApi(coinId: string, currency: string, from: number, to: number) {
-    let url = baseUrl + coinId + "/market_chart/range?vs_currency=" + currency + "&from=" + from + "&to=" + to;
-    console.log("url " + url);
-    const response = await axios.get(url);
-    return response.data;
-};
-
-export async function getPriceChangeRange(coinId: string, currency: string, time: string) {
+export async function getPriceChangeRange(coinId: string, currency: string, time: string): Promise<PriceChangeModel> {
     let unixTimeFrom = 0;
     let unixTimeTo = 0;
 

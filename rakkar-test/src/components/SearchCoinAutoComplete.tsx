@@ -10,25 +10,30 @@ interface SearchProps {
 }
 
 const SearchCoinAutoComplete = (props: SearchProps) => {
-    if(!props)
+    const [value, setValue] = React.useState<TredingCoinModel | null>(null);
+    const [inputValue, setInputValue] = React.useState('');
+
+    if (!props)
         return (
             <div></div>
         );
 
-    const sendDataToParent = (data: TredingCoinModel): void => {
-        props.emitSearchData(data);
+    const sendDataToParent = (data: TredingCoinModel | any): void => {
+       props.emitSearchData(data);
     }
-    
+
     let rows = props.trendingModels;
     return (
         <Autocomplete
             options={rows}
-            getOptionLabel={(option) => option.name}
-            isOptionEqualToValue={(option, value) => {
-                return option.coin_id === value;
-            }}
-            onChange={(event, newValue) => {
+            getOptionLabel={(option: TredingCoinModel) => option.name}
+            onChange={(event: any, newValue: TredingCoinModel | null) => {
                 sendDataToParent(newValue);
+                return setValue(newValue);
+            }}
+            inputValue={inputValue}
+            onInputChange={(event, newInputValue) => {
+                setInputValue(newInputValue);
             }}
             id="controllable-states-demo"
             sx={{ width: '100%' }}

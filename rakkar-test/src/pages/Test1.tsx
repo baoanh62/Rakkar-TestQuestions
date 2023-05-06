@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Page } from "../types/page";
 import React, { useEffect, useState } from "react";
 import MainLayout from '../components/common/MainLayout'
@@ -8,9 +7,9 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import SearchCoinAutoComplete from '../components/SearchCoinAutoComplete';
 import CoindDetailUI from '../components/DetailCoinUI';
 import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin';
-import { getPriceChangeRange, PriceChangeModel } from '@/services/getPriceChangeRange';
-import { getCoinDetail, CoinDetailModel } from "@/services/getCoinDetail";
-import { LineChartCoin } from "@/components/LineChartCoin";
+import { PriceChangeModel, getPriceChangeRange } from '../services/getPriceChangeRange';
+import { CoinDetailModel, getCoinDetail } from "../services/getCoinDetail";
+import { LineChartCoin } from "../components/LineChartCoin";
 
 const darkTheme = createTheme({
   palette: {
@@ -21,19 +20,22 @@ const darkTheme = createTheme({
   },
 });
 
-const styles = {
-  main: {
-    'margin-top': '20px'
-  }
-};
+const Test1: Page = () => {
+  const [searchModel, setData] = useState<TredingCoinModel | any>(null);
+  const [trendingCoin, setTrendingCoin] = useState<TredingCoinModel[] | any[0]>([]);
+  const [coinDetail, setCoinDetail] = useState<CoinDetailModel | any>([]);
+  const [coinPriceChange, setCoinPriceChange] = useState<PriceChangeModel | any>([]);
 
-const test1: Page = () => {
-  const [searchModel, setData] = useState<TredingCoinModel | null>(null);
-  const [coinDetail, setCoinDetail] = useState<CoinDetailModel | null>(null);
-  const [priceChangeModel, setPriceChangeModel] = useState<PriceChangeModel | null>(null);
-  let trendingCoin = findTrendingCoin();
+  useEffect(() => {
+    findTrendingCoin().then(data => {
+      setTrendingCoin(data);
+    });
+  }, []);
 
-  async function receiveSearchModel(prop: TredingCoinModel | null): void {
+  async function receiveSearchModel(prop: TredingCoinModel | null): Promise<any> {
+    if (!prop)
+      return;
+
     let response = await getPriceChangeRange(prop.id, "usd", "24h");
     console.log(response);
 
@@ -42,14 +44,14 @@ const test1: Page = () => {
 
     setData(prop);
     setCoinDetail(coinDetail);
-    setPriceChangeModel(response);
+    setCoinPriceChange(coinPriceChange);
   }
 
   async function receiveRangeChange(time: string) {
-    let result = await getPriceChangeRange(searchModel?.id, "usd", time);
-
+    if (!searchModel)
+      return;
+    let result = await getPriceChangeRange(searchModel.id, "usd", time);
     console.log(result);
-    setPriceChangeModel(result);
   }
 
   return (
@@ -59,18 +61,17 @@ const test1: Page = () => {
           Find Trending Coin
         </h1>
         <SearchCoinAutoComplete trendingModels={trendingCoin} emitSearchData={receiveSearchModel} />
-        <div style={styles.main}>
-          <CoindDetailUI trendingModel={searchModel}
-            coinDetail={coinDetail}
-            emitRangePriceChange={receiveRangeChange} />
+        <div style={{ marginTop: 20 }}>
+          <CoindDetailUI trendingModel={searchModel} emitRangePriceChange={receiveRangeChange} coinDetail={coinDetail} />
         </div>
-        <LineChartCoin style={styles.main}
-          priceChangeModel={priceChangeModel} />
+        <div style={{ marginTop: 20 }}>
+          <LineChartCoin priceChangeModel={coinPriceChange}/>
+        </div>
       </Container>
     </ThemeProvider>
   );
 };
 
-export default test1;
+export default Test1;
 
-test1.layout = MainLayout
+Test1.layout = MainLayout

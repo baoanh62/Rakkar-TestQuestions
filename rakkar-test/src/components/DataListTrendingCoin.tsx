@@ -10,6 +10,7 @@ import Paper from '@mui/material/Paper';
 
 import { findTrendingCoin, TredingCoinModel } from '../services/getTrendingCoin';
 import { getExchangeCoinRates, ExchangeCoinRageModel } from '../services/getExchangeRate';
+import { useState } from 'react';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -32,7 +33,16 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 const DataListTrendingCoin = () => {
-    let rows = findTrendingCoin();
+    const [dataRows, setDataRows] = useState<TredingCoinModel[]>([]);
+
+    useEffect(() => {
+        findTrendingCoin().then(data => {
+            setDataRows(data);
+        });
+
+    }, []);
+
+
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 700 }} aria-label="customized table">
@@ -43,7 +53,7 @@ const DataListTrendingCoin = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => (
+                    {dataRows.map((row) => (
                         <StyledTableRow key={row.id}>
                             <StyledTableCell component="th" scope="row">
                                 {row.id}
@@ -58,3 +68,7 @@ const DataListTrendingCoin = () => {
 }
 
 export default DataListTrendingCoin;
+
+function useEffect(arg0: () => void, arg1: never[]) {
+    throw new Error('Function not implemented.');
+}

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { styled } from '@mui/material/styles';
-
 import { getCoinDetail, CoinDetailModel } from '../services/getCoinDetail';
 import { getPriceChangeRange } from '@/services/getPriceChangeRange';
 import { TredingCoinModel } from '@/services/getTrendingCoin';
@@ -10,6 +8,16 @@ interface DetailProps {
     trendingModel: TredingCoinModel,
     coinDetail: CoinDetailModel,
     emitRangePriceChange: (time: string) => void;
+}
+
+const CurrencyFormat = (price: number): string => {
+    if (!price)
+        return '';
+
+    return price.toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    })
 }
 
 const CoindDetailUI = (props: DetailProps) => {
@@ -31,17 +39,18 @@ const CoindDetailUI = (props: DetailProps) => {
         <Stack>
             <Grid container style={{ height: "100%" }}>
                 <Grid>
-                    <img src={data.small} />
+                    <img
+                        loading="lazy"
+                        src={data.small}
+                        alt={data.name}
+                    />
                 </Grid>
                 <Divider />
                 <Box mt={2}>
                     <h2>
                         <b>{data.name}</b> {data.symbol}
                     </h2>
-                    <Typography variant='h4'>{coinDetail?.current_price.toLocaleString('en-US', {
-                        style: 'currency',
-                        currency: 'USD',
-                        })}</Typography>
+                    <Typography variant='h4'>{CurrencyFormat(coinDetail?.current_price)}</Typography>
                 </Box>
             </Grid>
             <div style={{ marginRight: 20, textAlign: 'right' }}>

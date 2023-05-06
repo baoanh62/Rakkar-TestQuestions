@@ -1,4 +1,4 @@
-import React, { PropsWithChildren } from "react";
+import React, { PropsWithChildren, ReactNode } from "react";
 import Navbar from "./Navbar";
 import {
     createTheme,
@@ -15,7 +15,7 @@ let darkTheme = createTheme({
 });
 darkTheme = responsiveFontSizes(darkTheme);
 
-const MainLayout = ({ children }: PropsWithChildren) => {
+const MainLayout = ({ children }: PropsWithChildren<any>) => {
     return (
         <>
             <ThemeProvider theme={darkTheme}>
