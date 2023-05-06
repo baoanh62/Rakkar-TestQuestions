@@ -1,8 +1,6 @@
 import React from "react";
 import type { Page } from '../types/page'
 import MainLayout from '../components/common/MainLayout'
-
-import Link from "next/link";
 import { Button, Card, CardActionArea, CardActions, CardContent, CardMedia, Container, Typography } from "@mui/material";
 
 const HomePage: Page = () => {

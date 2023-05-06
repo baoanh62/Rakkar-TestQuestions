@@ -44,7 +44,8 @@ export const data = {
 };
 
 interface ChartProps {
-    priceChangeModel: PriceChangeModel,
+  priceChangeModel: PriceChangeModel,
+  selectedDay: string,
 }
 
 function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
@@ -56,6 +57,10 @@ function createGradient(ctx: CanvasRenderingContext2D, area: ChartArea) {
   gradient.addColorStop(1, "#0000ff");
 
   return gradient;
+}
+
+function CreateLabels1Day(){
+  let currentHours = new Date().getHours
 }
 
 export const LineChartCoin = (props: ChartProps) => {
@@ -70,7 +75,7 @@ export const LineChartCoin = (props: ChartProps) => {
     if (!chart) {
       return;
     }
-   
+
     const chartData = {
       ...data,
       datasets: data.datasets.map(dataset => ({

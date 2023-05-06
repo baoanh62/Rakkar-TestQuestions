@@ -2,11 +2,18 @@ import * as React from 'react';
 import { getCoinDetail, CoinDetailModel } from '../services/getCoinDetail';
 import { getPriceChangeRange } from '@/services/getPriceChangeRange';
 import { TredingCoinModel } from '@/services/getTrendingCoin';
-import { Box, Button, ButtonGroup, Divider, Grid, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, ButtonGroup, Card, CardActionArea, CardActions, CardContent, CardMedia, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material';
+import ImageIcon from '@mui/icons-material/Image';
+import WorkIcon from '@mui/icons-material/Work';
+import BeachAccessIcon from '@mui/icons-material/BeachAccess';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { CoinOHLCDetailModel } from '@/services/getCoinOHLC';
 
 interface DetailProps {
     trendingModel: TredingCoinModel,
     coinDetail: CoinDetailModel,
+    coinOHCL: CoinOHLCDetailModel,
     emitRangePriceChange: (time: string) => void;
 }
 
@@ -20,14 +27,19 @@ const CurrencyFormat = (price: number): string => {
     })
 }
 
+const defaultTheme = createTheme({
+    palette: {
+        mode: 'light',
+        primary: {
+            main: '#e3f2fd',
+        },
+    },
+});
+
 const CoindDetailUI = (props: DetailProps) => {
-
-    const sendDataToParent = (time: string): void => {
-        props.emitRangePriceChange(time);
-    }
-
     let data = props?.trendingModel;
     let coinDetail = props?.coinDetail;
+    let coinOHCL = props?.coinOHCL;
 
     if (!data) {
         return (
@@ -36,33 +48,71 @@ const CoindDetailUI = (props: DetailProps) => {
     }
 
     return (
-        <Stack>
-            <Grid container style={{ height: "100%" }}>
-                <Grid>
-                    <img
-                        loading="lazy"
-                        src={data.small}
-                        alt={data.name}
-                    />
-                </Grid>
-                <Divider />
-                <Box mt={2}>
-                    <h2>
-                        <b>{data.name}</b> {data.symbol}
-                    </h2>
-                    <Typography variant='h4'>{CurrencyFormat(coinDetail?.current_price)}</Typography>
-                </Box>
-            </Grid>
-            <div style={{ marginRight: 20, textAlign: 'right' }}>
-                <ButtonGroup variant="contained" aria-label="outlined default button group">
-                    <Button onClick={(event) => {
-                        sendDataToParent("24h");
-                    }}>24h</Button>
-                    <Button onClick={(event) => { sendDataToParent('7d') }}>7d</Button>
-                    <Button onClick={(event) => { sendDataToParent('14d') }}>14d</Button>
-                </ButtonGroup>
-            </div>
-        </Stack>
+        <ThemeProvider theme={defaultTheme}>
+            <CssBaseline />
+            <Card >
+                <CardActionArea>
+                    <CardContent>
+                        <Typography gutterBottom variant="body2" component="div" >
+                            <img
+                                loading="lazy"
+                                src={data.small}
+                                alt={data.name}
+                            />
+                            <b>{data.name}</b>
+                        </Typography>
+                        <Typography gutterBottom variant="h2" component="div">
+                            {data.symbol}
+                        </Typography>
+                        <Typography variant="h3" color="text.secondary">
+                            {CurrencyFormat(coinDetail?.current_price)}
+                        </Typography>
+                        <List
+                            sx={{
+                                width: '100%',
+                                maxWidth: 360,
+                                bgcolor: 'background.paper',
+                            }}
+                        >
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <ImageIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="24h Low / 24h High" secondary={CurrencyFormat(coinOHCL?.price_24h.low) + " / " + CurrencyFormat(coinOHCL?.price_24h.high)} />
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <WorkIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="7d Low / 7d High" secondary={CurrencyFormat(coinOHCL?.price_7d.low) + " / " + CurrencyFormat(coinOHCL?.price_7d.high)} />
+                            </ListItem>
+                            <Divider variant="inset" component="li" />
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <BeachAccessIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Market Cap Rank" secondary={"# " + coinDetail?.market_cap_rank} />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <BeachAccessIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary="Market Cap" secondary={CurrencyFormat(coinDetail?.market_cap)} />
+                            </ListItem>
+                        </List>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </ThemeProvider>
     );
 }
 
