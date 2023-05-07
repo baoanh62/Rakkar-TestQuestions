@@ -1,13 +1,17 @@
 # Install dependencies only when needed
-FROM node:18 AS deps
+FROM node:16-alpine
+LABEL author="anhle <lhbaoanh@gmail.com>"
 
-RUN mkdir -p /usr/app/
-WORKDIR /usr/app
+RUN mkdir -p /app/
+WORKDIR /app
 
 #copy from to
-COPY ./ ./
+COPY package.json
+RUN npm install 
+    && npm cache clean
 
-RUN npm install
+COPY . .
+
 RUN npm run build
 
 EXPOSE 3000
