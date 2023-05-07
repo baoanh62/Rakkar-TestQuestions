@@ -4,8 +4,14 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     outputStandalone: true,
-//    outputFileTracingRoot: path.join(__dirname, '../../'),
-  },   
+    externalDir: true | {
+      enabled: true,
+      silent: true,
+    },
+    //    outputFileTracingRoot: path.join(__dirname, '../../'),
+  },
+  // Potential new config flag:
+  disableExperimentalFeaturesWarning: true
 }
 
 module.exports = nextConfig

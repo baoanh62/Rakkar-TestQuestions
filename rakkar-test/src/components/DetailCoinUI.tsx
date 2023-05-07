@@ -2,13 +2,14 @@ import * as React from 'react';
 import { getCoinDetail, CoinDetailModel } from '../services/getCoinDetail';
 import { getPriceChangeRange } from '@/services/getPriceChangeRange';
 import { TredingCoinModel } from '@/services/getTrendingCoin';
-import { Avatar, Box, Button, ButtonGroup, Card, CardActionArea, CardActions, CardContent, CardMedia, Divider, Grid, List, ListItem, ListItemAvatar, ListItemText, Stack, Typography } from '@mui/material';
-import ImageIcon from '@mui/icons-material/Image';
-import WorkIcon from '@mui/icons-material/Work';
+import { Avatar, Card, CardActionArea, CardContent, Divider, List, ListItem, ListItemAvatar, ListItemText, Typography } from '@mui/material';
 import BeachAccessIcon from '@mui/icons-material/BeachAccess';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CoinOHLCDetailModel } from '@/services/getCoinOHLC';
+import EqualizerTwoToneIcon from '@mui/icons-material/EqualizerTwoTone';
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
+import PriceChangeTwoToneIcon from '@mui/icons-material/PriceChangeTwoTone';
 
 interface DetailProps {
     trendingModel: TredingCoinModel,
@@ -77,7 +78,7 @@ const CoindDetailUI = (props: DetailProps) => {
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
-                                        <ImageIcon />
+                                        <MonetizationOnTwoToneIcon />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary="24h Low / 24h High" secondary={CurrencyFormat(coinOHCL?.price_24h.low) + " / " + CurrencyFormat(coinOHCL?.price_24h.high)} />
@@ -86,7 +87,7 @@ const CoindDetailUI = (props: DetailProps) => {
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
-                                        <WorkIcon />
+                                        <PriceChangeTwoToneIcon />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary="7d Low / 7d High" secondary={CurrencyFormat(coinOHCL?.price_7d.low) + " / " + CurrencyFormat(coinOHCL?.price_7d.high)} />
@@ -95,7 +96,7 @@ const CoindDetailUI = (props: DetailProps) => {
                             <ListItem>
                                 <ListItemAvatar>
                                     <Avatar>
-                                        <BeachAccessIcon />
+                                        <EqualizerTwoToneIcon />
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText primary="Market Cap Rank" secondary={"# " + coinDetail?.market_cap_rank} />

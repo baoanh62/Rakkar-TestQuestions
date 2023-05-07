@@ -12,6 +12,7 @@ import { CoinDetailModel, getCoinDetail } from "../services/getCoinDetail";
 import { LineChartCoin } from "../components/LineChartCoin";
 import { Button, ButtonGroup } from '@mui/material';
 import { CoinOHLCDetailModel, getOHLC } from "../services/getCoinOHLC";
+import { ChartData } from "chart.js";
 
 const darkTheme = createTheme({
   palette: {
@@ -22,13 +23,43 @@ const darkTheme = createTheme({
   },
 });
 
+const getCurrentDate = (dateVal: Date) => {
+  const date = ('0' + dateVal.getDate()).slice(-2);
+  const month = ('0' + (dateVal.getMonth() + 1)).slice(-2);
+  const year = dateVal.getFullYear();
+  return `${date}/${month}/${year}`;
+}
+
+const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
+  let labels = priceChartModel.prices.map((val: any) => {
+    return getCurrentDate(new Date(val[0]));
+  });
+  let data = priceChartModel.prices.map((val: any) => {
+    return val[1];
+  });
+
+  const chartData = {
+    labels: labels,
+    datasets: [{
+      label: time,
+      data: data,
+      fill: true,
+      borderColor: 'rgb(75, 192, 192)',
+      backgroundColor: ["red", "blue", "green", "blue", "red", "blue"], 
+    }]
+  };
+  return chartData;
+}
+
 const Test1: Page = () => {
   const [searchModel, setData] = useState<TredingCoinModel | any>(null);
   const [trendingCoin, setTrendingCoin] = useState<TredingCoinModel[] | any[0]>([]);
   const [coinDetail, setCoinDetail] = useState<CoinDetailModel | any>([]);
   const [coinPriceChange, setCoinPriceChange] = useState<PriceChangeModel | any>([]);
   const [coinOHLC, setOHLC] = useState<CoinOHLCDetailModel | any>(null);
-  const [selectedDay, setDay] = useState<string | any>('');
+  const [chartData, setChartData] = useState<ChartData<'bar'>>({
+    datasets: [],
+  });
 
   useEffect(() => {
     findTrendingCoin().then(data => {
@@ -41,18 +72,14 @@ const Test1: Page = () => {
       return;
 
     let response = await getPriceChangeRange(prop.id, "usd", "24h");
-    console.log(response);
-
     let coinDetail = await getCoinDetail(prop.id);
-    console.log(coinDetail);
-
     let coinOHCL = await getOHLC(prop.id, 'usd');
-
+    let chartDataModel = creatChartData("24h", response);
     setData(prop);
     setCoinDetail(coinDetail);
     setCoinPriceChange(coinPriceChange);
     setOHLC(coinOHCL);
-    setDay("24h");
+    setChartData(chartDataModel);
   }
 
   async function receiveRangeChange(time: string) {
@@ -60,8 +87,8 @@ const Test1: Page = () => {
       return;
 
     let result = await getPriceChangeRange(searchModel.id, "usd", time);
-    setDay(time);
-    console.log(result);
+    let chartDataModel = creatChartData(time, result);
+    setChartData(chartDataModel);
   }
 
   return (
@@ -81,7 +108,7 @@ const Test1: Page = () => {
               <Button onClick={(event) => { receiveRangeChange('7d') }}>7d</Button>
               <Button onClick={(event) => { receiveRangeChange('14d') }}>14d</Button>
             </ButtonGroup>
-            <LineChartCoin priceChangeModel={coinPriceChange} selectedDay={selectedDay}/>
+            <LineChartCoin chartData={chartData} />
           </div>
         </div>
       </Container>
