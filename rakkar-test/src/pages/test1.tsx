@@ -23,7 +23,12 @@ const darkTheme = createTheme({
   },
 });
 
-const getCurrentDate = (dateVal: Date) => {
+const getSubtractDate = (date: number) => {
+  let yesterday = new Date(new Date().setDate(new Date().getDate() - date));
+  return yesterday;
+}
+
+const getFormatDate = (dateVal: Date) => {
   const date = ('0' + dateVal.getDate()).slice(-2);
   const month = ('0' + (dateVal.getMonth() + 1)).slice(-2);
   const year = dateVal.getFullYear();
@@ -31,10 +36,31 @@ const getCurrentDate = (dateVal: Date) => {
 }
 
 const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
-  let labels = priceChartModel.prices.map((val: any) => {
-    return getCurrentDate(new Date(val[0]));
+  var minDate = new Date();
+  switch (time) {
+    case "24h": {
+      minDate = getSubtractDate(1);
+      break;
+    }
+    case "7d": {
+      minDate = getSubtractDate(7);
+      break;
+    }
+    case "14d": {
+      minDate = getSubtractDate(14);
+      break;
+    }
+  }
+
+  let newArray = priceChartModel.prices.filter((val) => {
+    return (new Date(val[0]) >= minDate);
   });
-  let data = priceChartModel.prices.map((val: any) => {
+
+  let labels = newArray.map((val: any) => {
+    return getFormatDate(new Date(val[0]));
+  });
+
+  let data = newArray.map((val: any) => {
     return val[1];
   });
 
@@ -44,8 +70,26 @@ const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
       label: time,
       data: data,
       fill: true,
-      borderColor: 'rgb(75, 192, 192)',
-      backgroundColor: ["red", "blue", "green", "blue", "red", "blue"], 
+      backgroundColor: [
+        'rgba(255, 26, 104, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+        'rgba(0, 0, 0, 0.2)'
+      ],
+      borderColor: [
+        'rgba(255, 26, 104, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+        'rgba(0, 0, 0, 1)'
+      ],
+      borderWidth: 1,
+      tension: 0.4
     }]
   };
   return chartData;
@@ -70,7 +114,7 @@ const Test1: Page = () => {
   async function receiveSearchModel(prop: TredingCoinModel | null): Promise<any> {
     if (!prop)
       return;
-
+  
     let response = await getPriceChangeRange(prop.id, "usd", "24h");
     let coinDetail = await getCoinDetail(prop.id);
     let coinOHCL = await getOHLC(prop.id, 'usd');

@@ -10,7 +10,6 @@ export interface CoinDetailModel {
 
 export async function getCoinDetail(coinId: string): Promise<CoinDetailModel>{
     let data = await getCoinDetailApi(coinId);
-    console.log(data);
     return {
         current_price: data.market_data.current_price.usd,
         market_cap_rank: data.market_cap_rank,

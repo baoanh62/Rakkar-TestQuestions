@@ -24,7 +24,7 @@ const HomePage: Page = () => {
                 Test 1 - Trending Coin
               </Typography>
               <Typography variant="h5" color="text.secondary">
-                Complete - 85%
+                Complete - 100%
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 - Done Get Trending Coin and Autocomplete
@@ -33,7 +33,7 @@ const HomePage: Page = () => {
                 - Done Get Detail Info Coin and OHLC
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                - Get Data Price for Chart but not yet complete populate data on Line Chart
+                - Don Get Data Price for Chart and show on Line Chart
               </Typography>
             </CardContent>
           </CardActionArea>

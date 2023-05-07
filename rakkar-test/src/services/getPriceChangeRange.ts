@@ -25,6 +25,7 @@ export async function getPriceChangeRange(coinId: string, currency: string, time
   
           unixTimeFrom = convertUnixTimestamp(from);
           unixTimeTo = convertUnixTimestamp(today);
+          break;
         }
         case "7d": {
           let today = new Date()
@@ -33,6 +34,7 @@ export async function getPriceChangeRange(coinId: string, currency: string, time
   
           unixTimeFrom = convertUnixTimestamp(from);
           unixTimeTo = convertUnixTimestamp(today);
+          break;
         }
         case "14d": {
           let today = new Date()
@@ -41,6 +43,7 @@ export async function getPriceChangeRange(coinId: string, currency: string, time
   
           unixTimeFrom = convertUnixTimestamp(from);
           unixTimeTo = convertUnixTimestamp(today);
+          break;
         }
       }
 

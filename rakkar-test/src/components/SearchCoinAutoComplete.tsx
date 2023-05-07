@@ -11,7 +11,6 @@ interface SearchProps {
 }
 
 const SearchCoinAutoComplete = (props: SearchProps) => {
-    const [value, setValue] = React.useState<TredingCoinModel | null>(null);
     const [inputValue, setInputValue] = React.useState('');
 
     if (!props)
@@ -30,7 +29,6 @@ const SearchCoinAutoComplete = (props: SearchProps) => {
             getOptionLabel={(option: TredingCoinModel) => option.name}
             onChange={(event: any, newValue: TredingCoinModel | null) => {
                 sendDataToParent(newValue);
-                return setValue(newValue);
             }}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
