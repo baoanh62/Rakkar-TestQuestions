@@ -35,7 +35,7 @@ const getFormatDate = (dateVal: Date) => {
   return `${date}/${month}/${year}`;
 }
 
-const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
+const createChartPriceArrayByTime = (time: string, priceChartModel: PriceChangeModel) => {
   var minDate = new Date();
   switch (time) {
     case "24h": {
@@ -55,6 +55,12 @@ const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
   let newArray = priceChartModel.prices.filter((val) => {
     return (new Date(val[0]) >= minDate);
   });
+  return newArray;
+}
+
+const creatChartData = (time: string, priceChartModel: PriceChangeModel) => {
+
+  let newArray = createChartPriceArrayByTime(time, priceChartModel);
 
   let labels = newArray.map((val: any) => {
     return getFormatDate(new Date(val[0]));
@@ -114,7 +120,7 @@ const Test1: Page = () => {
   async function receiveSearchModel(prop: TredingCoinModel | null): Promise<any> {
     if (!prop)
       return;
-  
+
     let response = await getPriceChangeRange(prop.id, "usd", "24h");
     let coinDetail = await getCoinDetail(prop.id);
     let coinOHCL = await getOHLC(prop.id, 'usd');

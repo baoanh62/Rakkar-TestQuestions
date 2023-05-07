@@ -1,5 +1,4 @@
 import React, { useRef, useEffect, useState } from 'react';
-import type { ChartData, ChartArea } from 'chart.js';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -8,6 +7,7 @@ import {
   LineElement,
   Tooltip,
   Legend,
+  Utils
 } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 
@@ -24,6 +24,17 @@ interface ChartProps {
   chartData: any
 }
 
+export const options = {
+  responsive: true,
+  plugins: {
+    title: {
+      display: true,
+      text: 'Grid Line Settings'
+    }
+  }
+};
+
+
 export const LineChartCoin = (props: ChartProps) => {
   const chartRef = useRef<ChartJS>(null);
 
@@ -39,5 +50,5 @@ export const LineChartCoin = (props: ChartProps) => {
 
   }, []);
 
-  return <Chart ref={chartRef} type='line' data={props?.chartData} />;
+  return <Chart ref={chartRef} type='line' data={props?.chartData} options={options} />;
 }
