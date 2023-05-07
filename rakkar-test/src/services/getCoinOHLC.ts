@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getOHLCApi } from './coingeckoApi';
-import { data } from "@/components/LineChartCoin";
 
 export interface CoinOHLCDetailModel {
     price_24h: {

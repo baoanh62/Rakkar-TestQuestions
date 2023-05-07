@@ -21,17 +21,22 @@ ChartJS.register(
 );
 
 interface ChartProps {
-  chartData: unknown
+  chartData: any
 }
 
 export const LineChartCoin = (props: ChartProps) => {
   const chartRef = useRef<ChartJS>(null);
-  useEffect(() => {
-    const chart = chartRef.current;
 
-    if (!chart) {
-      return <><div>No data</div></>;
-    }
+  useEffect(() => {
+    const genChart = () => {
+      const chart = chartRef.current;
+
+      if (!chart) {
+        return <><div>No data</div></>;
+      }
+    };
+    genChart();
+
   }, []);
 
   return <Chart ref={chartRef} type='line' data={props?.chartData} />;
